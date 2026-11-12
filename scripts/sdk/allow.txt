@@ -1,0 +1,6 @@
+# Known-fake values used in tests and docs. The forbidden-content check (sdk.py check) skips an
+# exact match of a line below. Only add values that are obviously not real credentials.
+sk_test_Ab12Cd34Ef56Gh78Ij90Kl12Mn34
+sk_test_Zz11Yy22Xx33Ww44
+pk_live_Zz99Yy88Xx77Ww66
+sk_live_Q1w2E3r4

@@ -1,0 +1,40 @@
+[project]
+# The PyPI name "prynt" belongs to an unrelated project, so the distribution is "pryntid".
+# The import name stays `prynt`:  pip install pryntid  →  from prynt import PryntServer
+name = "pryntid"
+dynamic = ["version"]
+description = "Prynt Python server SDK — verify visitor identifications server-side with your secret key."
+readme = "README.md"
+requires-python = ">=3.8"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{ name = "Prynt" }]
+dependencies = []
+keywords = ["prynt", "fingerprint", "device-intelligence", "fraud", "bot-detection", "multi-accounting"]
+classifiers = [
+  "Development Status :: 5 - Production/Stable",
+  "Intended Audience :: Developers",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3",
+  "Topic :: Security",
+  "Typing :: Typed",
+]
+
+[project.urls]
+Homepage = "https://pryntid.com"
+Source = "https://github.com/devonauts/prynt-sdks/tree/main/packages/server-python"
+Issues = "https://github.com/devonauts/prynt-sdks/issues"
+Changelog = "https://github.com/devonauts/prynt-sdks/blob/main/packages/server-python/CHANGELOG.md"
+
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages = ["prynt"]
+
+[tool.setuptools.package-data]
+prynt = ["py.typed"]
+
+[tool.setuptools.dynamic]
+version = { attr = "prynt.__version__" }

@@ -1,0 +1,101 @@
+{
+  "name": "@pryntid/js",
+  "version": "1.1.0",
+  "description": "Prynt browser agent — stable visitor identification & device intelligence. A free, self-hostable FingerprintJS alternative.",
+  "keywords": [
+    "fingerprint",
+    "fingerprinting",
+    "device-id",
+    "visitor-id",
+    "browser-fingerprint",
+    "fraud",
+    "bot-detection",
+    "fingerprintjs"
+  ],
+  "homepage": "https://pryntid.com",
+  "bugs": {
+    "url": "https://github.com/devonauts/prynt-sdks/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/devonauts/prynt-sdks.git",
+    "directory": "packages/agent"
+  },
+  "license": "MIT",
+  "author": "Prynt",
+  "type": "module",
+  "main": "./dist/prynt.cjs",
+  "module": "./dist/prynt.mjs",
+  "types": "./dist/index.d.ts",
+  "unpkg": "./dist/prynt.umd.js",
+  "jsdelivr": "./dist/prynt.umd.js",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/prynt.mjs"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/prynt.cjs"
+      }
+    },
+    "./reveal": {
+      "import": {
+        "types": "./dist/reveal.d.ts",
+        "default": "./dist/prynt-reveal.mjs"
+      },
+      "require": {
+        "types": "./dist/reveal.d.cts",
+        "default": "./dist/prynt-reveal.cjs"
+      }
+    },
+    "./replay": {
+      "import": {
+        "types": "./dist/replay.d.ts",
+        "default": "./dist/prynt-replay.mjs"
+      },
+      "require": {
+        "types": "./dist/replay.d.cts",
+        "default": "./dist/prynt-replay.cjs"
+      }
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist/prynt.mjs",
+    "dist/prynt.cjs",
+    "dist/prynt.umd.js",
+    "dist/prynt-reveal.mjs",
+    "dist/prynt-reveal.cjs",
+    "dist/prynt-reveal.umd.js",
+    "dist/index.d.ts",
+    "dist/index.d.cts",
+    "dist/reveal.d.ts",
+    "dist/reveal.d.cts",
+    "dist/prynt-replay.mjs",
+    "dist/prynt-replay.cjs",
+    "dist/prynt-replay.umd.js",
+    "dist/replay.d.ts",
+    "dist/replay.d.cts"
+  ],
+  "sideEffects": false,
+  "engines": {
+    "node": ">=16"
+  },
+  "scripts": {
+    "build": "node build.mjs",
+    "dev": "node build.mjs --watch",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "node --test test/*.test.mjs",
+    "prepublishOnly": "npm run build"
+  },
+  "devDependencies": {
+    "@rrweb/record": "2.2.1",
+    "esbuild": "^0.23.0",
+    "typescript": "^5.5.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

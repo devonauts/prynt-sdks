@@ -1,0 +1,21 @@
+group 'dev.prynt.flutter'
+version '1.0.0'
+buildscript {
+    repositories { google(); mavenCentral() }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:8.1.0'
+        classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.9.24'
+    }
+}
+rootProject.allprojects { repositories { google(); mavenCentral() } }
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+android {
+    namespace 'dev.prynt.flutter'
+    compileSdk 34
+    defaultConfig { minSdk 21 }
+}
+dependencies {
+    // The native Prynt Android SDK, from Maven Central.
+    implementation 'com.pryntid:prynt-android:1.0.0'
+}

@@ -1,0 +1,17 @@
+{
+  "name": "prynt/server",
+  "description": "Prynt server SDK for PHP — verify identifications, webhooks, and unseal Sealed Results.",
+  "type": "library",
+  "license": "MIT",
+  "homepage": "https://pryntid.com",
+  "authors": [{ "name": "Prynt", "email": "support@pryntid.com", "homepage": "https://pryntid.com" }],
+  "support": {
+    "email": "support@pryntid.com",
+    "docs": "https://pryntid.com/docs",
+    "source": "https://github.com/devonauts/prynt-php",
+    "issues": "https://github.com/devonauts/prynt-sdks/issues"
+  },
+  "require": { "php": ">=8.0", "ext-curl": "*", "ext-openssl": "*", "ext-json": "*" },
+  "autoload": { "psr-4": { "Prynt\\": "src/" } },
+  "keywords": ["prynt", "fingerprint", "device-intelligence", "fraud", "bot-detection"]
+}

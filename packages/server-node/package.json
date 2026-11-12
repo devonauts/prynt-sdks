@@ -1,0 +1,64 @@
+{
+  "name": "@pryntid/node",
+  "version": "1.0.0",
+  "description": "Prynt Node.js server SDK — verify visitor identifications server-side with your secret key.",
+  "keywords": [
+    "prynt",
+    "fingerprint",
+    "device-intelligence",
+    "fraud",
+    "bot-detection"
+  ],
+  "homepage": "https://pryntid.com",
+  "bugs": {
+    "url": "https://github.com/devonauts/prynt-sdks/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/devonauts/prynt-sdks.git",
+    "directory": "packages/server-node"
+  },
+  "license": "MIT",
+  "author": "Prynt",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.mjs"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist/index.mjs",
+    "dist/index.cjs",
+    "dist/index.d.ts",
+    "dist/index.d.cts"
+  ],
+  "sideEffects": false,
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "build": "node build.mjs",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "node build.mjs && node --test test/*.test.mjs",
+    "prepublishOnly": "npm test"
+  },
+  "devDependencies": {
+    "@types/node": "^26.2.0",
+    "esbuild": "^0.23.0",
+    "typescript": "^5.5.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

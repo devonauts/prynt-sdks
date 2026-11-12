@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <PackageId>Prynt.Server</PackageId>
+    <Version>1.0.0</Version>
+    <Authors>Prynt</Authors>
+    <Description>Verify Prynt identifications, webhooks, and unseal Sealed Results.</Description>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://pryntid.com</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/devonauts/prynt-sdks</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>prynt;device-intelligence;fingerprint;fraud;bot-detection</PackageTags>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageReleaseNotes>https://github.com/devonauts/prynt-sdks/blob/main/packages/server-dotnet/CHANGELOG.md</PackageReleaseNotes>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <NoWarn>$(NoWarn);CS1591</NoWarn>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="README.md" Pack="true" PackagePath="\" />
+    <None Include="LICENSE" Pack="true" PackagePath="\" Condition="Exists('LICENSE')" />
+  </ItemGroup>
+</Project>

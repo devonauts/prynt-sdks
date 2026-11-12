@@ -1,0 +1,33 @@
+.prynt-wrap h1 { display: flex; align-items: center; gap: 8px; }
+.prynt-wrap h1 .dashicons { color: #0a6cf0; font-size: 28px; width: 28px; height: 28px; }
+.prynt-sub { color: #646970; font-size: 14px; max-width: 60ch; margin-top: 2px; }
+.prynt-status { padding: 12px 16px; border-radius: 8px; font-weight: 500; margin: 14px 0; display: flex;
+  align-items: center; gap: 12px; }
+.prynt-status.ok { background: #edf7ed; color: #1d6a35; border: 1px solid #b7e0b9; }
+.prynt-status.warn { background: #fff4e5; color: #8a5300; border: 1px solid #f2d29b; }
+.prynt-test { padding: 10px 14px; border-radius: 8px; margin: 0 0 14px; font-size: 13px; }
+.prynt-test.ok { background: #edf7ed; color: #1d6a35; }
+.prynt-test.bad { background: #fbeaea; color: #a1281f; }
+.prynt-grid { display: grid; grid-template-columns: 1.3fr 1fr; gap: 20px; align-items: start; margin-top: 6px; }
+.prynt-card { background: #fff; border: 1px solid #dcdcde; border-radius: 10px; padding: 20px 22px; }
+.prynt-card h2 { font-size: 15px; margin: 4px 0 12px; padding-top: 14px; border-top: 1px solid #f0f0f1; }
+.prynt-card h2:first-of-type { border-top: none; padding-top: 0; }
+.prynt-card label { display: block; font-weight: 600; font-size: 13px; margin: 0 0 14px; }
+.prynt-card label input[type="url"], .prynt-card label input[type="text"], .prynt-card label input[type="password"] {
+  width: 100%; margin-top: 5px; }
+.prynt-card .hint { display: block; font-weight: 400; color: #787c82; font-size: 12px; margin-top: 4px; }
+.prynt-card input.small { width: 80px; }
+.prynt-toggles { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.prynt-card label.cb, .prynt-card label.radio { font-weight: 500; display: flex; align-items: center; gap: 8px; }
+.prynt-log { width: 100%; border-collapse: collapse; font-size: 13px; }
+.prynt-log th { text-align: left; color: #787c82; font-weight: 600; padding: 6px 8px; border-bottom: 1px solid #f0f0f1; }
+.prynt-log td { padding: 8px; border-bottom: 1px solid #f6f7f7; }
+.pill { font-size: 11px; font-weight: 700; padding: 2px 9px; border-radius: 980px; text-transform: uppercase; }
+.pill.ok { background: #edf7ed; color: #1d6a35; } .pill.warn { background: #fff4e5; color: #8a5300; }
+.pill.bad { background: #fbeaea; color: #a1281f; }
+@media (max-width: 900px) { .prynt-grid { grid-template-columns: 1fr; } }
+/* Reveal card (class-prynt-reveal.php) */
+.prynt-card.prynt-reveal { margin-bottom: 20px; }
+.prynt-reveal details { margin-top: 6px; }
+.prynt-reveal summary { cursor: pointer; color: #2271b1; font-size: 13px; margin-bottom: 10px; }
+.prynt-reveal input[name="reveal_code"] { font-family: monospace; font-size: 16px; letter-spacing: 2px; text-transform: uppercase; }

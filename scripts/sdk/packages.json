@@ -1,0 +1,154 @@
+{
+  "_comment": "Single source of truth for the public SDKs: what each package is called on its registry, where its version lives, and how it is tagged. Read by scripts/sdk/sdk.py (release, bump, status, export). `versions[0]` is the version of record; the others are kept equal to it. A regex has exactly one capture group: the version. `tag` is the git tag a release creates in the public repository ({v} = version). `requires`: packages that must be live on their registry before this one is published.",
+  "repo": "devonauts/prynt-sdks",
+  "packages": [
+    {
+      "id": "agent", "dir": "packages/agent", "eco": "npm", "registry": "npm", "name": "@pryntid/js",
+      "label": "Browser agent",
+      "versions": [
+        { "file": "package.json", "json": "version" },
+        { "file": "src/index.ts", "re": "const SDK_VERSION = '([^']*)'" }
+      ],
+      "tag": "packages/agent/v{v}"
+    },
+    {
+      "id": "react", "dir": "packages/react", "eco": "npm", "registry": "npm", "name": "@pryntid/react",
+      "label": "React bindings", "buildFirst": ["agent"], "requires": ["agent"],
+      "versions": [ { "file": "package.json", "json": "version" } ],
+      "tag": "packages/react/v{v}"
+    },
+    {
+      "id": "server-node", "dir": "packages/server-node", "eco": "npm", "registry": "npm", "name": "@pryntid/node",
+      "label": "Node.js server SDK",
+      "versions": [
+        { "file": "package.json", "json": "version" },
+        { "file": "src/index.ts", "re": "export const SDK_VERSION = '([^']*)'" }
+      ],
+      "tag": "packages/server-node/v{v}"
+    },
+    {
+      "id": "mobile-react-native", "dir": "packages/mobile-react-native", "eco": "npm", "registry": "npm", "name": "@pryntid/react-native",
+      "label": "React Native SDK", "requires": ["mobile-ios", "mobile-android"],
+      "versions": [ { "file": "package.json", "json": "version" } ],
+      "tag": "packages/mobile-react-native/v{v}"
+    },
+    {
+      "id": "mcp", "dir": "packages/mcp", "eco": "npm", "registry": "npm", "name": "@pryntid/mcp",
+      "label": "MCP server",
+      "versions": [
+        { "file": "package.json", "json": "version" },
+        { "file": "src/version.ts", "re": "export const SERVER_VERSION = '([^']*)'" }
+      ],
+      "tag": "packages/mcp/v{v}"
+    },
+    {
+      "id": "server-python", "dir": "packages/server-python", "eco": "python", "registry": "pypi", "name": "pryntid",
+      "label": "Python server SDK (import prynt)",
+      "versions": [ { "file": "prynt/__init__.py", "re": "(?m)^__version__ = \"([^\"]*)\"" } ],
+      "tag": "packages/server-python/v{v}"
+    },
+    {
+      "id": "server-ruby", "dir": "packages/server-ruby", "eco": "ruby", "registry": "rubygems", "name": "prynt",
+      "label": "Ruby server SDK",
+      "versions": [ { "file": "lib/prynt.rb", "re": "VERSION = '([^']*)'" } ],
+      "tag": "packages/server-ruby/v{v}"
+    },
+    {
+      "id": "server-dotnet", "dir": "packages/server-dotnet", "eco": "dotnet", "registry": "nuget", "name": "Prynt.Server",
+      "label": ".NET server SDK",
+      "versions": [
+        { "file": "Prynt.Server.csproj", "re": "<Version>([^<]*)</Version>" },
+        { "file": "Prynt.cs", "re": "public const string Version = \"([^\"]*)\"" }
+      ],
+      "tag": "packages/server-dotnet/v{v}"
+    },
+    {
+      "id": "server-java", "dir": "packages/server-java", "eco": "maven", "registry": "maven", "name": "com.pryntid:prynt-server",
+      "label": "Java server SDK",
+      "versions": [
+        { "file": "pom.xml", "re": "<artifactId>prynt-server</artifactId>\\s*<version>([^<]*)</version>" },
+        { "file": "src/main/java/com/prynt/PryntServer.java", "re": "public static final String VERSION = \"([^\"]*)\"" }
+      ],
+      "tag": "packages/server-java/v{v}"
+    },
+    {
+      "id": "mobile-android", "dir": "packages/mobile-android", "eco": "android", "registry": "maven", "name": "com.pryntid:prynt-android",
+      "label": "Android SDK",
+      "versions": [
+        { "file": "build.gradle.kts", "re": "(?m)^version = \"([^\"]*)\"" },
+        { "file": "src/main/java/dev/prynt/Prynt.kt", "re": "const val VERSION = \"([^\"]*)\"" }
+      ],
+      "tag": "packages/mobile-android/v{v}"
+    },
+    {
+      "id": "server-php", "dir": "packages/server-php", "eco": "php", "registry": "packagist", "name": "prynt/server",
+      "label": "PHP server SDK",
+      "versions": [
+        { "file": "CHANGELOG.md", "re": "(?m)^## \\[(\\d+\\.\\d+\\.\\d+[^\\]]*)\\]" },
+        { "file": "src/PryntServer.php", "re": "public const VERSION = '([^']*)'" }
+      ],
+      "tag": "packages/server-php/v{v}",
+      "split": { "repo": "pryntid/prynt-php", "tag": "v{v}" },
+      "_note": "Packagist needs composer.json at the root of a repository and bare semver tags, so this package is also exported on its own (split) repository."
+    },
+    {
+      "id": "server-go", "dir": "packages/server-go", "eco": "go", "registry": "go", "name": "github.com/devonauts/prynt-sdks/packages/server-go",
+      "label": "Go server SDK",
+      "versions": [
+        { "file": "CHANGELOG.md", "re": "(?m)^## \\[(\\d+\\.\\d+\\.\\d+[^\\]]*)\\]" },
+        { "file": "prynt.go", "re": "const Version = \"([^\"]*)\"" }
+      ],
+      "tag": "packages/server-go/v{v}"
+    },
+    {
+      "id": "mobile-ios", "dir": "packages/mobile-ios", "eco": "ios", "registry": "cocoapods", "name": "Prynt",
+      "label": "iOS SDK (Swift Package + CocoaPods)",
+      "versions": [
+        { "file": "Sources/Prynt/Prynt.swift", "re": "public static let version = \"([^\"]*)\"" },
+        { "file": "Prynt.podspec", "re": "s\\.version\\s*=\\s*'([^']*)'" }
+      ],
+      "tag": "packages/mobile-ios/v{v}",
+      "split": { "repo": "pryntid/prynt-ios", "tag": "v{v}" },
+      "_note": "Swift Package Manager and CocoaPods resolve Package.swift / the podspec at the root of a repository by bare semver tags, so this package is also exported on its own (split) repository."
+    },
+    {
+      "id": "mobile-flutter", "dir": "packages/mobile-flutter", "eco": "flutter", "registry": "pub", "name": "prynt",
+      "label": "Flutter plugin", "requires": ["mobile-ios", "mobile-android"],
+      "versions": [
+        { "file": "pubspec.yaml", "re": "(?m)^version: (.*)$" },
+        { "file": "ios/prynt.podspec", "re": "s\\.version\\s*=\\s*'([^']*)'" },
+        { "file": "android/build.gradle", "re": "(?m)^version '([^']*)'" }
+      ],
+      "tag": "packages/mobile-flutter/v{v}"
+    },
+    {
+      "id": "wordpress", "dir": "packages/wordpress", "eco": "wordpress", "registry": "wordpress", "name": "prynt",
+      "label": "WordPress plugin",
+      "versions": [
+        { "file": "prynt-for-wordpress/prynt.php", "re": "\\* Version:\\s*(\\S+)" },
+        { "file": "prynt-for-wordpress/prynt.php", "re": "define\\( 'PRYNT_VERSION', '([^']*)' \\)" },
+        { "file": "prynt-for-wordpress/readme.txt", "re": "(?m)^Stable tag: (\\S+)" }
+      ],
+      "tag": "packages/wordpress/v{v}"
+    },
+    {
+      "id": "edge-cloudflare", "dir": "packages/edge-cloudflare", "eco": "zip", "registry": "none", "name": "prynt-edge-cloudflare",
+      "label": "Cloudflare Worker connector",
+      "versions": [
+        { "file": "CHANGELOG.md", "re": "(?m)^## \\[(\\d+\\.\\d+\\.\\d+[^\\]]*)\\]" },
+        { "file": "src/worker.js", "re": "const SDK = 'edge-cloudflare/([^']*)'" }
+      ],
+      "tag": "packages/edge-cloudflare/v{v}"
+    },
+    {
+      "id": "edge-nginx", "dir": "packages/edge-nginx", "eco": "zip", "registry": "none", "name": "prynt-edge-nginx",
+      "label": "nginx / OpenResty connector",
+      "versions": [
+        { "file": "CHANGELOG.md", "re": "(?m)^## \\[(\\d+\\.\\d+\\.\\d+[^\\]]*)\\]" },
+        { "file": "prynt-authrequest.conf", "re": "X-Prynt-SDK \"edge-nginx/([^\"]*)\"" },
+        { "file": "prynt-openresty.lua", "re": "\"edge-nginx/([^\"]*)\"" }
+      ],
+      "tag": "packages/edge-nginx/v{v}"
+    }
+  ]
+}

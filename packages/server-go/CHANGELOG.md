@@ -1,0 +1,11 @@
+# Changelog — github.com/devonauts/prynt-sdks/packages/server-go
+
+All notable changes to this package. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/)
+and versions follow [Semantic Versioning](https://semver.org/). New notes go under **Unreleased**;
+`scripts/sdk/release.sh server-go X.Y.Z` dates them.
+
+## [Unreleased]
+
+## [1.0.0]
+
+- First public release. `prynt.New(Config)`: `GetEvent` (with `AccountsOnDevice`), `UpdateEvent`, `VerifyWebhook`, `UnsealResult`. Standard library only.

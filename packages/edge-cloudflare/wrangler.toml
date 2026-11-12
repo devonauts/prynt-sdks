@@ -1,0 +1,11 @@
+name = "prynt-edge"
+main = "src/worker.js"
+compatibility_date = "2024-11-01"
+
+[vars]
+PRYNT_API = "https://api.pryntid.com"
+# PROTECT_PATHS = "/login,/signup,/checkout"   # optional; default gates HTML navigations
+
+# Set the public key as a SECRET (not a plaintext var):
+#   npx wrangler secret put PRYNT_PUBLIC_KEY
+#   npx wrangler secret put PRYNT_PROXY_SECRET   (console → API Keys → First-party proxy)

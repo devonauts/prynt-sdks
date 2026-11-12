@@ -1,0 +1,102 @@
+name: Release
+# Publishes one package per tag:  git tag packages/agent/v1.0.1 && git push origin packages/agent/v1.0.1
+# (scripts/sdk/export-public.sh --push in the source repository creates and pushes these tags).
+# Manual run (Actions → Release → Run workflow, or the Prynt superadmin "Publish now" button):
+# publishes every package whose current version is not on its registry yet.
+#
+# Secrets (Settings → Secrets and variables → Actions → Secrets):
+#   NPM_TOKEN, PYPI_API_TOKEN, RUBYGEMS_API_KEY, NUGET_API_KEY, MAVEN_CENTRAL_USERNAME,
+#   MAVEN_CENTRAL_PASSWORD, MAVEN_GPG_PRIVATE_KEY, MAVEN_GPG_PASSPHRASE, WP_SVN_USERNAME, WP_SVN_PASSWORD
+# Variables (… → Variables): PUBLISH_NPM, PUBLISH_PYPI, PUBLISH_RUBYGEMS, PUBLISH_NUGET,
+#   PUBLISH_MAVEN, PUBLISH_PUB, PUBLISH_WORDPRESS = true  — a registry is skipped until its variable is true.
+# pub.dev publishes with GitHub OIDC (no secret): pub.dev → package prynt → Admin → Automated publishing,
+#   repository devonauts/prynt-sdks, tag pattern packages/mobile-flutter/v{{version}}.
+
+on:
+  push:
+    tags: ['packages/*/v*']
+  workflow_dispatch:
+    inputs:
+      package:
+        description: 'Package id (scripts/sdk/packages.json) or "all"'
+        default: all
+        required: false
+
+permissions:
+  contents: read
+
+jobs:
+  plan:
+    runs-on: ubuntu-latest
+    outputs:
+      ids: ${{ steps.p.outputs.ids }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: p
+        env:
+          SEL: ${{ inputs.package || 'all' }}
+        run: |
+          if [ "${GITHUB_REF_TYPE}" = tag ]; then
+            ids="[\"$(python3 scripts/sdk/sdk.py tag-to-id "${GITHUB_REF_NAME}")\"]"
+          else
+            sel="$SEL"
+            ids=$(python3 -c "import json,sys; m=json.load(open('scripts/sdk/packages.json'))['packages']; s=sys.argv[1]; print(json.dumps([p['id'] for p in m if s in ('all', p['id']) and p['eco'] not in ('flutter', 'ios')]))" "$sel")
+          fi
+          echo "ids=$ids" >> "$GITHUB_OUTPUT"
+
+  publish:
+    needs: plan
+    if: ${{ needs.plan.outputs.ids != '[]' && !contains(needs.plan.outputs.ids, 'mobile-flutter') }}
+    runs-on: ubuntu-latest
+    environment: release
+    permissions:
+      contents: read
+      id-token: write   # npm --provenance
+    strategy:
+      fail-fast: false
+      max-parallel: 4
+      matrix:
+        id: ${{ fromJSON(needs.plan.outputs.ids) }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build, test and publish ${{ matrix.id }}
+        run: python3 scripts/sdk/sdk.py release ${{ matrix.id }} --publish
+        env:
+          PUBLISH_NPM: ${{ vars.PUBLISH_NPM }}
+          PUBLISH_PYPI: ${{ vars.PUBLISH_PYPI }}
+          PUBLISH_RUBYGEMS: ${{ vars.PUBLISH_RUBYGEMS }}
+          PUBLISH_NUGET: ${{ vars.PUBLISH_NUGET }}
+          PUBLISH_MAVEN: ${{ vars.PUBLISH_MAVEN }}
+          PUBLISH_WORDPRESS: ${{ vars.PUBLISH_WORDPRESS }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          PYPI_API_TOKEN: ${{ secrets.PYPI_API_TOKEN }}
+          RUBYGEMS_API_KEY: ${{ secrets.RUBYGEMS_API_KEY }}
+          NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
+          MAVEN_CENTRAL_USERNAME: ${{ secrets.MAVEN_CENTRAL_USERNAME }}
+          MAVEN_CENTRAL_PASSWORD: ${{ secrets.MAVEN_CENTRAL_PASSWORD }}
+          MAVEN_GPG_PRIVATE_KEY: ${{ secrets.MAVEN_GPG_PRIVATE_KEY }}
+          MAVEN_GPG_PASSPHRASE: ${{ secrets.MAVEN_GPG_PASSPHRASE }}
+          WP_SVN_USERNAME: ${{ secrets.WP_SVN_USERNAME }}
+          WP_SVN_PASSWORD: ${{ secrets.WP_SVN_PASSWORD }}
+
+  pub-dev:
+    # pub.dev automated publishing only accepts tag-triggered runs, authenticated by GitHub OIDC.
+    needs: plan
+    if: ${{ github.ref_type == 'tag' && contains(needs.plan.outputs.ids, 'mobile-flutter') && vars.PUBLISH_PUB == 'true' }}
+    runs-on: ubuntu-latest
+    environment: release
+    permissions:
+      contents: read
+      id-token: write
+    defaults:
+      run:
+        working-directory: packages/mobile-flutter
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dart-lang/setup-dart@v1     # exchanges the OIDC token for a pub.dev credential
+      - uses: subosito/flutter-action@v2
+        with: { channel: stable }
+      - run: cp ../../LICENSE LICENSE 2>/dev/null || true
+      - run: flutter pub get
+      - run: flutter pub publish --dry-run
+      - run: flutter pub publish --force

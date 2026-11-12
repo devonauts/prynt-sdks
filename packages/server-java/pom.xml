@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <!-- com.pryntid is verified on central.sonatype.com with a DNS TXT record on pryntid.com. -->
+  <groupId>com.pryntid</groupId>
+  <artifactId>prynt-server</artifactId>
+  <version>1.0.0</version>
+  <packaging>jar</packaging>
+
+  <name>Prynt Server SDK</name>
+  <description>Verify Prynt identifications and webhooks, and unseal Sealed Results. Zero dependencies (JDK 11+).</description>
+  <url>https://pryntid.com</url>
+
+  <licenses>
+    <license>
+      <name>MIT License</name>
+      <url>https://opensource.org/licenses/MIT</url>
+    </license>
+  </licenses>
+
+  <developers>
+    <developer>
+      <name>Prynt</name>
+      <email>support@pryntid.com</email>
+      <organization>Prynt</organization>
+      <organizationUrl>https://pryntid.com</organizationUrl>
+    </developer>
+  </developers>
+
+  <scm>
+    <connection>scm:git:https://github.com/devonauts/prynt-sdks.git</connection>
+    <developerConnection>scm:git:ssh://git@github.com/devonauts/prynt-sdks.git</developerConnection>
+    <url>https://github.com/devonauts/prynt-sdks/tree/main/packages/server-java</url>
+  </scm>
+
+  <properties>
+    <maven.compiler.release>11</maven.compiler.release>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+
+  <build>
+    <plugins>
+      <!-- Publish to the Maven Central Portal (new Sonatype system). Runs on `mvn deploy`. -->
+      <plugin>
+        <groupId>org.sonatype.central</groupId>
+        <artifactId>central-publishing-maven-plugin</artifactId>
+        <version>0.5.0</version>
+        <extensions>true</extensions>
+        <configuration>
+          <publishingServerId>central</publishingServerId>
+          <autoPublish>true</autoPublish>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+  <!-- `mvn -Prelease deploy` additionally attaches sources + javadoc jars and GPG-signs every
+       artifact (all four are required by Maven Central). Kept out of normal builds so `mvn
+       package` needs no GPG key. -->
+  <profiles>
+    <profile>
+      <id>release</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-source-plugin</artifactId>
+            <version>3.3.1</version>
+            <executions>
+              <execution><id>attach-sources</id><goals><goal>jar-no-fork</goal></goals></execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-javadoc-plugin</artifactId>
+            <version>3.7.0</version>
+            <configuration><doclint>none</doclint></configuration>
+            <executions>
+              <execution><id>attach-javadocs</id><goals><goal>jar</goal></goals></execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-gpg-plugin</artifactId>
+            <version>3.2.4</version>
+            <executions>
+              <execution><id>sign-artifacts</id><phase>verify</phase><goals><goal>sign</goal></goals></execution>
+            </executions>
+            <configuration>
+              <!-- Non-interactive signing in CI: the passphrase comes from MAVEN_GPG_PASSPHRASE. -->
+              <gpgArguments><arg>--pinentry-mode</arg><arg>loopback</arg></gpgArguments>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
+</project>

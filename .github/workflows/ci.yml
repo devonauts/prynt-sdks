@@ -1,0 +1,32 @@
+name: CI
+# Build, test and dry-run every SDK in the same Docker images the release uses.
+on:
+  push: { branches: [main] }
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Versions agree + no secrets or private hosts in the packages
+        run: |
+          python3 scripts/sdk/sdk.py list
+          python3 scripts/sdk/sdk.py check
+
+  sdk:
+    needs: check
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        pkg: [agent, react, server-node, mobile-react-native, mcp, server-python, server-ruby,
+              server-dotnet, server-java, mobile-android, server-php, server-go, mobile-ios,
+              mobile-flutter, wordpress, edge-cloudflare, edge-nginx]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build, test, pack, registry dry-run
+        run: python3 scripts/sdk/sdk.py release ${{ matrix.pkg }} --dry-run

@@ -1,0 +1,12 @@
+apply plugin: 'com.android.library'
+apply plugin: 'org.jetbrains.kotlin.android'
+android {
+    namespace 'dev.prynt.reactnative'
+    compileSdk 34
+    defaultConfig { minSdk 21 }
+}
+dependencies {
+    implementation 'com.facebook.react:react-native:+'
+    // The native Prynt Android SDK, from Maven Central.
+    implementation 'com.pryntid:prynt-android:1.0.0'
+}

@@ -1,0 +1,61 @@
+{
+  "name": "@pryntid/mcp",
+  "version": "0.2.0",
+  "description": "Prynt MCP server — lets an AI assistant look up identification events, check IP reputation, report outcomes and guide a Prynt integration, using your secret key.",
+  "keywords": [
+    "prynt",
+    "mcp",
+    "model-context-protocol",
+    "device-intelligence",
+    "fraud",
+    "bot-detection"
+  ],
+  "homepage": "https://pryntid.com/build-with-ai",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/devonauts/prynt-sdks.git",
+    "directory": "packages/mcp"
+  },
+  "license": "MIT",
+  "author": "Prynt",
+  "type": "module",
+  "bin": {
+    "prynt-mcp": "dist/index.js"
+  },
+  "main": "./dist/server.js",
+  "types": "./dist/server.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/server.d.ts",
+      "default": "./dist/server.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "build": "node -e \"require('fs').rmSync('dist',{recursive:true,force:true})\" && tsc -p tsconfig.json",
+    "start": "node dist/index.js",
+    "test": "npm run build && node --test test/*.test.mjs"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.32.0",
+    "zod": "^4.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.19.0",
+    "typescript": "~5.9.0"
+  },
+  "bugs": {
+    "url": "https://github.com/devonauts/prynt-sdks/issues"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

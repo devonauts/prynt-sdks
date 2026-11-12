@@ -1,0 +1,68 @@
+{
+  "name": "@pryntid/react",
+  "version": "1.0.0",
+  "description": "React bindings for Prynt — a PryntProvider, useVisitorData() and useProtectForm() hooks.",
+  "keywords": [
+    "prynt",
+    "react",
+    "fingerprint",
+    "device-intelligence"
+  ],
+  "homepage": "https://pryntid.com",
+  "bugs": {
+    "url": "https://github.com/devonauts/prynt-sdks/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/devonauts/prynt-sdks.git",
+    "directory": "packages/react"
+  },
+  "license": "MIT",
+  "author": "Prynt",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.mjs"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist/index.mjs",
+    "dist/index.cjs",
+    "dist/index.d.ts",
+    "dist/index.d.cts"
+  ],
+  "sideEffects": false,
+  "engines": {
+    "node": ">=16"
+  },
+  "scripts": {
+    "build": "node build.mjs",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "prepublishOnly": "npm run build"
+  },
+  "peerDependencies": {
+    "@pryntid/js": "^1.0.0",
+    "react": ">=17"
+  },
+  "devDependencies": {
+    "esbuild": "^0.23.0",
+    "typescript": "^5.5.0",
+    "react": "^18.3.1",
+    "@types/react": "^18.3.0",
+    "@pryntid/js": "file:../agent"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
